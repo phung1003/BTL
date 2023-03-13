@@ -1,1 +1,0 @@
-Ý tưởng của game là các vật cản sẽ xuất hiện một cách ngẫu nhiên. Nhiệm vụ của người chơi là điều khiển nhân vật né các chướng ngại đó

@@ -1,0 +1,29 @@
+# depslib dependency file v1.0
+1678642246 source:c:\users\admin\desktop\btl\baitaploncotochuc\main.cpp
+	<iostream>
+	"SDL_func.hpp"
+
+1678642438 c:\users\admin\desktop\btl\baitaploncotochuc\sdl_func.hpp
+	<iostream>
+	<SDL.h>
+	<SDL_image.h>
+
+1678708238 source:c:\users\admin\desktop\baitaploncotochuc\sdl_func.cpp
+	<iostream>
+	<SDL.h>
+	<SDL_image.h>
+	"SDL_func.hpp"
+
+1678694072 c:\users\admin\desktop\baitaploncotochuc\sdl_func.hpp
+	<iostream>
+	<SDL.h>
+	<SDL_image.h>
+
+1678708711 source:c:\users\admin\desktop\baitaploncotochuc\main.cpp
+	<iostream>
+	<SDL.h>
+	<SDL_image.h>
+	<cstdlib>
+	<ctime>
+	"SDL_func.hpp"
+
