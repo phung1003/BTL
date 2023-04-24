@@ -70,7 +70,7 @@ SDL_Texture* loadtexture( string path, SDL_Renderer* renderer)
     {
         newTex = SDL_CreateTextureFromSurface( renderer, loadedSurface);
         if (newTex == nullptr)
-           cout << "Unable to create texture ";
+           cout << "Unable to create texture " <<SDL_GetError ;
         SDL_FreeSurface(loadedSurface);
     }
     return newTex;
@@ -78,30 +78,55 @@ SDL_Texture* loadtexture( string path, SDL_Renderer* renderer)
 
 
 
-bool dieuhuong(SDL_Rect &filled_rect)
+bool dieuhuong(SDL_Rect &filled_rect,int &movex,int &movey)
 {
     SDL_Event e;
+     while ( SDL_PollEvent(&e) != 0) {
 
+            if(e.type== SDL_KEYDOWN)
+            {
+                switch (e.key.keysym.sym)
+                {
+                   case SDLK_LEFT:
+                       if (filled_rect.x >= 0) movex=-5; else movex = 0;
 
-    while ( SDL_PollEvent(&e) != 0) {
-    switch (e.key.keysym.sym)
-    {
-       case SDLK_LEFT:
-           if (filled_rect.x != 0) filled_rect.x = filled_rect.x - 15;
-           break;
-       case SDLK_RIGHT:
-           if (filled_rect.x + 50 != SCREEN_WIDTH) filled_rect.x = filled_rect.x + 15;
-           break;
-       case SDLK_UP:
-           if (filled_rect.y != 0) filled_rect.y = filled_rect.y - 15;
-           break;
-       case SDLK_DOWN:
-           if (filled_rect.y + 50 != SCREEN_HEIGHT) filled_rect.y = filled_rect.y + 15;
-           break;
-       case SDLK_ESCAPE:
-           return 0;
-           break;
-    }
+                       break;
+                   case SDLK_RIGHT:
+                       if (filled_rect.x + 50 <= SCREEN_WIDTH) movex=5; else movex = 0;
+
+                       break;
+                   case SDLK_UP:
+                       if (filled_rect.y >= 0) movey=-5; else movey = 0;
+
+                       break;
+                   case SDLK_DOWN:
+                       if (filled_rect.y + 50 <= SCREEN_HEIGHT) movey=5; else movey = 0;
+
+                       break;
+                   case SDLK_ESCAPE:
+                        return 0;
+                        break;
+                }
+            }
+
+            if(e.type== SDL_KEYUP)
+            {
+                switch (e.key.keysym.sym)
+                {
+                   case SDLK_LEFT:
+                       if (filled_rect.x >= 0) movex=0 ;
+                       break;
+                   case SDLK_RIGHT:
+                       if (filled_rect.x + 50 <= SCREEN_WIDTH) movex=0;
+                       break;
+                   case SDLK_UP:
+                       if (filled_rect.y >= 0) movey=0;
+                       break;
+                   case SDLK_DOWN:
+                       if (filled_rect.y + 50 <= SCREEN_HEIGHT) movey=0;
+                       break;
+                }
+            }
     }
     return 1;
 }
