@@ -25,6 +25,7 @@ int main(int argc, char* argv[])
     SDL_Texture* ball1 = loadtexture("ball1.png", renderer);
     SDL_Texture* ball2 = loadtexture("ball2.png", renderer);
     SDL_Texture* ball3 = loadtexture("ball3.png", renderer);
+    SDL_Texture* ghost = loadtexture("Excalibur.png", renderer);
 
 
 
@@ -39,7 +40,7 @@ int main(int argc, char* argv[])
 
     SDL_Rect ex_rect;
     ex_rect.x = 0;
-    ex_rect.y = 70;
+    ex_rect.y = rand() % (SCREEN_HEIGHT - 50);
     ex_rect.h = 50;
     ex_rect.w = 50;
     int cex = 0;
@@ -53,18 +54,28 @@ int main(int argc, char* argv[])
     int claser = 0;
 
 
+
     SDL_Rect ball_rect;
     ball_rect.x = SCREEN_WIDTH;
     ball_rect.y = SCREEN_HEIGHT;
     ball_rect.h = 50;
     ball_rect.w = 50;
     int cball = 0;
-    float aball = 0;
-    int bball = +5;
+    float aball = 1;
+    int bball = 0;
 
 
     //ball_rect.y = a*ball_rect.y + b;
 
+
+    SDL_Rect ghost_rect;
+    ghost_rect.x = SCREEN_WIDTH;
+    ghost_rect.y = 0;
+    ghost_rect.h = 50;
+    ghost_rect.w = 50;
+    float aghost = 1;
+    int bghost = 0;
+    int cghost = 0;
 
 
 
@@ -75,7 +86,9 @@ int main(int argc, char* argv[])
     int li = 15;
     int bi = 1;
     bool x = 1;
-    while (x)
+    bool m = 1;
+
+        while (x)
     {
 
 
@@ -219,6 +232,21 @@ int main(int argc, char* argv[])
 
 
 
+        if (m9_rect.x + m9_rect.w >= ghost_rect.x &&
+            ghost_rect.x + ghost_rect.w >= m9_rect.x &&
+            m9_rect.y + m9_rect.h >= ghost_rect.y &&
+            ghost_rect.y + ghost_rect.h >= m9_rect.y)
+        {
+            SDL_Texture* endg = loadtexture("endgame.png", renderer);
+            SDL_RenderCopy(renderer, endg, NULL, NULL);
+            SDL_Delay(1000);
+            SDL_RenderPresent(renderer);
+            break;
+        }
+
+
+
+        SDL_RenderCopy(renderer, ghost, NULL, &ghost_rect);
         SDL_RenderCopy(renderer, ex, NULL, &ex_rect);
         SDL_RenderCopy(renderer, m9, NULL, &m9_rect);
         SDL_RenderCopy(renderer, laser, NULL, &laser_rect);
@@ -227,12 +255,28 @@ int main(int argc, char* argv[])
 
 
         x = dieuhuong(m9_rect, movex, movey);
-        if (m9_rect.x + movex <= SCREEN_WIDTH && m9_rect.x + movex >= 0) m9_rect.x = m9_rect.x + movex;
-        if (m9_rect.y + movey <= SCREEN_HEIGHT && m9_rect.y + movey >= 0) m9_rect.y = m9_rect.y + movey;
+        if (m9_rect.x + movex < SCREEN_WIDTH && m9_rect.x + movex >= 0) m9_rect.x = m9_rect.x + movex;
+        if (m9_rect.y + movey < SCREEN_HEIGHT && m9_rect.y + movey >= 0) m9_rect.y = m9_rect.y + movey;
+
+
+        if (ghost_rect.x > m9_rect.x) ghost_rect.x = ghost_rect.x - 3;
+        else if (ghost_rect.x < m9_rect.x) ghost_rect.x = ghost_rect.x + 3;
+        if (ghost_rect.y > m9_rect.y) ghost_rect.y = ghost_rect.y - 3;
+        else if (ghost_rect.y < m9_rect.y) ghost_rect.y = ghost_rect.y + 3;
+
+
+
+        cghost++;
+        if (cghost == 300)
+        {
+            ghost_rect.x = SCREEN_WIDTH;
+            ghost_rect.y = rand() % (SCREEN_HEIGHT - ghost_rect.h);
+            cghost = 0;
+
+        }
 
 
         ex_rect.x = ex_rect.x + i;
-
 
 
         laser_rect.w = laser_rect.w + li;
@@ -241,7 +285,8 @@ int main(int argc, char* argv[])
 
         ball_rect.y = ball_rect.y + i;
         ball_rect.x = aball*ball_rect.y + bball;
-        cout << "x: "<< ball_rect.x << " y: " << ball_rect.y << " a: "<<aball <<" b: " << bball << endl;
+
+
     }
 
 
