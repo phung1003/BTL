@@ -19,13 +19,15 @@ int main(int argc, char* argv[])
     srand(time(0));
     initSDL(window, renderer);
     SDL_Texture* background = loadtexture("background.png", renderer);
-    SDL_Texture* m9 = loadtexture("m9.png", renderer);
+    SDL_Texture* m9right = loadtexture("m9.png", renderer);
+    SDL_Texture* m9left = loadtexture("m9left.png", renderer);
     SDL_Texture* ex = loadtexture("Excalibur.png", renderer);
     SDL_Texture* laser = loadtexture("laser.png", renderer);
     SDL_Texture* ball1 = loadtexture("ball1.png", renderer);
     SDL_Texture* ball2 = loadtexture("ball2.png", renderer);
     SDL_Texture* ball3 = loadtexture("ball3.png", renderer);
-    SDL_Texture* ghost = loadtexture("Excalibur.png", renderer);
+    SDL_Texture* ball4 = loadtexture("ball4.png", renderer);
+    SDL_Texture* ghost = loadtexture("ghost.png", renderer);
 
 
 
@@ -40,12 +42,13 @@ int main(int argc, char* argv[])
 
 
     SDL_RenderCopy(renderer, background, NULL, NULL);
-    SDL_RenderCopy(renderer, m9, NULL, &m9_rect);
+    SDL_RenderCopy(renderer, m9right, NULL, &m9_rect);
 
+    bool cont = true;
 
-
-    while (true)
+    while (cont)
     {
+    bool direct = 1;
     float i = 5;
     int li = 15;
     int bi = 1;
@@ -57,20 +60,20 @@ int main(int argc, char* argv[])
 
     m9_rect.x = 0;
     m9_rect.y = 0;
-    m9_rect.h = 50;
+    m9_rect.h = 70;
     m9_rect.w = 50;
 
 
     ex_rect.x = 0;
     ex_rect.y = rand() % (SCREEN_HEIGHT - 100) + 50;
-    ex_rect.h = 50;
-    ex_rect.w = 50;
+    ex_rect.h = 60;
+    ex_rect.w = 60;
     int cex = 0;
 
 
     laser_rect.x = SCREEN_WIDTH - 50;
     laser_rect.y = rand() % (SCREEN_HEIGHT - 50);
-    laser_rect.h = 50;
+    laser_rect.h = 20;
     laser_rect.w = 50;
     int claser = 0;
 
@@ -86,8 +89,8 @@ int main(int argc, char* argv[])
 
     ghost_rect.x = SCREEN_WIDTH;
     ghost_rect.y = 0;
-    ghost_rect.h = 50;
-    ghost_rect.w = 50;
+    ghost_rect.h = 45;
+    ghost_rect.w = 45;
     float aghost = 1;
     int bghost = 0;
     int cghost = 0;
@@ -96,21 +99,27 @@ int main(int argc, char* argv[])
     {
         SDL_RenderCopy(renderer, background, NULL, NULL);
 
-        if (bi == 1)
+        if (bi >= 1 && bi <4)
         {
             SDL_RenderCopy(renderer, ball1, NULL, &ball_rect);
             bi++;
         }
-        else if (bi == 2)
+        else if (bi >= 4 && bi < 7)
         {
             SDL_RenderCopy(renderer, ball2, NULL, &ball_rect);
             bi++;
         }
-        else
+        else if (bi >= 7 && bi < 10)
         {
             SDL_RenderCopy(renderer, ball3, NULL, &ball_rect);
-            bi = 1;
+            bi++;
         }
+        else if (bi >= 10 && bi < 13)
+        {
+            SDL_RenderCopy(renderer, ball4, NULL, &ball_rect);
+            bi++;
+        }
+        else bi = 1;
 
 
 
@@ -125,7 +134,7 @@ int main(int argc, char* argv[])
             ex_rect.x = 0;
 
 
-            ex_rect.y = rand() % (SCREEN_HEIGHT - 50);
+            ex_rect.y = rand() % (SCREEN_HEIGHT - 20);
             cex = 0;
             i = i+0.05;
         }
@@ -226,8 +235,11 @@ int main(int argc, char* argv[])
 
         SDL_RenderCopy(renderer, ghost, NULL, &ghost_rect);
         SDL_RenderCopy(renderer, ex, NULL, &ex_rect);
-        SDL_RenderCopy(renderer, m9, NULL, &m9_rect);
         SDL_RenderCopy(renderer, laser, NULL, &laser_rect);
+        if (movex > 0) direct = 1;
+        else if (movex < 0) direct = 0;
+        if (direct) SDL_RenderCopy(renderer, m9right, NULL, &m9_rect);
+        else SDL_RenderCopy(renderer, m9left, NULL, &m9_rect);
         SDL_RenderPresent(renderer);
 
 
@@ -271,14 +283,26 @@ int main(int argc, char* argv[])
     SDL_RenderCopy(renderer, endg, NULL, NULL);
     SDL_RenderPresent(renderer);
     SDL_Delay(1000);
-    waitUntilKeyPressed();
+    SDL_Event e;
+    while (true) {
+        if ( SDL_WaitEvent(&e) != 0)
+            if (e.key.keysym.sym == SDLK_ESCAPE)
+            {
+                cont = false;
+                break;
+            }
+            else if (e.key.keysym.sym == SDLK_r)
+            {
+                break;
+            }
+        SDL_Delay(100);
+    }
 
     }
 
-    SDL_Delay(1000);
-    waitUntilKeyPressed();
+
     HuyTexture(background);
-    HuyTexture(m9);
+    HuyTexture(m9right);
     HuyTexture(ex);
     quitSDL(window, renderer);
     return 0;
