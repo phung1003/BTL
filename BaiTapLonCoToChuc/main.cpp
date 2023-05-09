@@ -31,22 +31,43 @@ int main(int argc, char* argv[])
 
 
     SDL_Rect m9_rect;
+    SDL_Rect ex_rect;
+    SDL_Rect laser_rect;
+    SDL_Rect ball_rect;
+    //ball_rect.y = a*ball_rect.y + b;
+    SDL_Rect ghost_rect;
+
+
+
+    SDL_RenderCopy(renderer, background, NULL, NULL);
+    SDL_RenderCopy(renderer, m9, NULL, &m9_rect);
+
+
+
+    while (true)
+    {
+    float i = 5;
+    int li = 15;
+    int bi = 1;
+    bool x = 1;
+    bool m = 1;
+    movex = 0;
+    movey = 0;
+
+
     m9_rect.x = 0;
     m9_rect.y = 0;
     m9_rect.h = 50;
     m9_rect.w = 50;
 
 
-
-    SDL_Rect ex_rect;
     ex_rect.x = 0;
-    ex_rect.y = rand() % (SCREEN_HEIGHT - 50);
+    ex_rect.y = rand() % (SCREEN_HEIGHT - 100) + 50;
     ex_rect.h = 50;
     ex_rect.w = 50;
     int cex = 0;
 
 
-    SDL_Rect laser_rect;
     laser_rect.x = SCREEN_WIDTH - 50;
     laser_rect.y = rand() % (SCREEN_HEIGHT - 50);
     laser_rect.h = 50;
@@ -54,8 +75,6 @@ int main(int argc, char* argv[])
     int claser = 0;
 
 
-
-    SDL_Rect ball_rect;
     ball_rect.x = SCREEN_WIDTH;
     ball_rect.y = SCREEN_HEIGHT;
     ball_rect.h = 50;
@@ -65,10 +84,6 @@ int main(int argc, char* argv[])
     int bball = 0;
 
 
-    //ball_rect.y = a*ball_rect.y + b;
-
-
-    SDL_Rect ghost_rect;
     ghost_rect.x = SCREEN_WIDTH;
     ghost_rect.y = 0;
     ghost_rect.h = 50;
@@ -77,22 +92,8 @@ int main(int argc, char* argv[])
     int bghost = 0;
     int cghost = 0;
 
-
-
-    SDL_RenderCopy(renderer, background, NULL, NULL);
-    SDL_RenderCopy(renderer, m9, NULL, &m9_rect);
-
-    float i = 5;
-    int li = 15;
-    int bi = 1;
-    bool x = 1;
-    bool m = 1;
-
-        while (x)
+    while (x)
     {
-
-
-
         SDL_RenderCopy(renderer, background, NULL, NULL);
 
         if (bi == 1)
@@ -178,11 +179,7 @@ int main(int argc, char* argv[])
             m9_rect.y + m9_rect.h >= ex_rect.y &&
             ex_rect.y + ex_rect.h >= m9_rect.y)
         {
-            SDL_Texture* endg = loadtexture("endgame.png", renderer);
-            SDL_RenderCopy(renderer, endg, NULL, NULL);
-            SDL_Delay(1000);
-            SDL_RenderPresent(renderer);
-            break;
+            x = false;
         }
 
 
@@ -192,12 +189,7 @@ int main(int argc, char* argv[])
             m9_rect.y  + m9_rect.h >= laser_rect.y &&
             laser_rect.y + laser_rect.h >= m9_rect.y )
         {
-            SDL_Texture* endg = loadtexture("endgame.png", renderer);
-            SDL_RenderCopy(renderer, endg, NULL, NULL);
-            SDL_Delay(1000);
-            SDL_RenderPresent(renderer);
-
-            break;
+            x = false;
         }
 
 
@@ -207,12 +199,7 @@ int main(int argc, char* argv[])
             m9_rect.y + m9_rect.h >= ex_rect.y &&
             ex_rect.y + ex_rect.h >= m9_rect.y )
         {
-            SDL_Texture* endg = loadtexture("endgame.png", renderer);
-            SDL_RenderCopy(renderer, endg, NULL, NULL);
-            SDL_Delay(1000);
-            SDL_RenderPresent(renderer);
-
-            break;
+            x = false;
         }
 
 
@@ -222,12 +209,7 @@ int main(int argc, char* argv[])
             m9_rect.y + m9_rect.h >= ball_rect.y &&
             ball_rect.y + ball_rect.h >= m9_rect.y )
         {
-            SDL_Texture* endg = loadtexture("endgame.png", renderer);
-            SDL_RenderCopy(renderer, endg, NULL, NULL);
-            SDL_Delay(1000);
-            SDL_RenderPresent(renderer);
-
-            break;
+           x = false;
         }
 
 
@@ -237,11 +219,7 @@ int main(int argc, char* argv[])
             m9_rect.y + m9_rect.h >= ghost_rect.y &&
             ghost_rect.y + ghost_rect.h >= m9_rect.y)
         {
-            SDL_Texture* endg = loadtexture("endgame.png", renderer);
-            SDL_RenderCopy(renderer, endg, NULL, NULL);
-            SDL_Delay(1000);
-            SDL_RenderPresent(renderer);
-            break;
+            x = false;
         }
 
 
@@ -254,7 +232,7 @@ int main(int argc, char* argv[])
 
 
 
-        x = dieuhuong(m9_rect, movex, movey);
+        dieuhuong(m9_rect, movex, movey);
         if (m9_rect.x + movex < SCREEN_WIDTH && m9_rect.x + movex >= 0) m9_rect.x = m9_rect.x + movex;
         if (m9_rect.y + movey < SCREEN_HEIGHT && m9_rect.y + movey >= 0) m9_rect.y = m9_rect.y + movey;
 
@@ -289,6 +267,13 @@ int main(int argc, char* argv[])
 
     }
 
+    SDL_Texture* endg = loadtexture("endgame.png", renderer);
+    SDL_RenderCopy(renderer, endg, NULL, NULL);
+    SDL_RenderPresent(renderer);
+    SDL_Delay(1000);
+    waitUntilKeyPressed();
+
+    }
 
     SDL_Delay(1000);
     waitUntilKeyPressed();
