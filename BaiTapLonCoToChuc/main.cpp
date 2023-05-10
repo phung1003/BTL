@@ -58,21 +58,21 @@ int main(int argc, char* argv[])
     movey = 0;
 
 
-    m9_rect.x = 0;
-    m9_rect.y = 0;
+    m9_rect.x = SCREEN_WIDTH / 2 - 70;
+    m9_rect.y = SCREEN_HEIGHT/ 2 - 50;
     m9_rect.h = 70;
     m9_rect.w = 50;
 
 
     ex_rect.x = 0;
-    ex_rect.y = rand() % (SCREEN_HEIGHT - 100) + 50;
+    ex_rect.y = rand() % (SCREEN_HEIGHT - 100) + 60;
     ex_rect.h = 60;
     ex_rect.w = 60;
     int cex = 0;
 
 
     laser_rect.x = SCREEN_WIDTH - 50;
-    laser_rect.y = rand() % (SCREEN_HEIGHT - 50);
+    laser_rect.y = rand() % (SCREEN_HEIGHT - 20);
     laser_rect.h = 20;
     laser_rect.w = 50;
     int claser = 0;
@@ -134,7 +134,7 @@ int main(int argc, char* argv[])
             ex_rect.x = 0;
 
 
-            ex_rect.y = rand() % (SCREEN_HEIGHT - 20);
+            ex_rect.y = rand() % (SCREEN_HEIGHT - ex_rect.h);
             cex = 0;
             i = i+0.05;
         }
@@ -158,7 +158,7 @@ int main(int argc, char* argv[])
         //Ball
         if (ball_rect.x <0 || ball_rect.y >= SCREEN_HEIGHT || ball_rect.x > SCREEN_WIDTH || ball_rect.y < 0 )
         {
-            ball_rect.x = rand() % (SCREEN_WIDTH - 50);
+            ball_rect.x = rand() % (SCREEN_WIDTH - ball_rect.w);
             if (ball_rect.x > SCREEN_WIDTH/2)
             {
                 cball = 0;
@@ -172,7 +172,7 @@ int main(int argc, char* argv[])
 
             bball = ball_rect.x;
 
-            aball = 1.0*(m9_rect.x - bball)/ (m9_rect.y + 200);
+            aball = 1.0*(m9_rect.x - bball)/ (m9_rect.y + 300);
             if (aball > 1) aball = 1;
             if (aball < -1) aball = -1;
 
